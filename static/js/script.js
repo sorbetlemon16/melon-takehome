@@ -7,7 +7,7 @@ $('#schedule').on('submit', (evt) => {
     };
 
     $.post("/search_reservations", formData, (res) => {
-        $('#available_reservations').html("Here is the current availability:");
+        $('#available_reservations').html("Below is the current availability. Select a time that works for you!");
         for (time of res) {
             $('#available_reservations').append(
                 `<form action="/reservations/book" method="POST">

@@ -14,22 +14,26 @@ crossorigin="anonymous"></script>
 
 <!-- Custom Styling -->
 <link rel="stylesheet" href="/static/css/styles.css">
+
+<h1>Reservations</h1>
 {% endblock %}
 
 {% block body %}
-  <h1>Reservations</h1>
-
-  <ul>
+  <table>
     {% for reservation in reservations %}
-      <form class="delete" id="{{reservation.reservation_id}}" action="/reservations/delete" method="POST">
-        <li>
+    <tr>
+        <td>
           {{ reservation.start_time.strftime('%A, %d %B %Y, %H:%M')}}
+        </td>
+        <form class="delete" id="{{reservation.reservation_id}}" action="/reservations/delete" method="POST">
+          <td>
           <input name="start_time" value="{{reservation.start_time}}" class="hidden">
-          <input type="submit" value="delete">
-        </li>
-      </form>
+          <input type="submit" value="Cancel reservation">
+        </form>
+      </td>
+    </tr>
     {% endfor %}
-  </ul>
+    </table>
   <script src="/static/js/script.js"></script>
 
 {% endblock %}
