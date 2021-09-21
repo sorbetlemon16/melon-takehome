@@ -1,0 +1,44 @@
+input[type="submit"] {
+    color: white;
+    background-color: rgb(0, 60, 68);
+    border: 0;
+    margin: 10px;
+    border-radius: 3px;
+    padding: 5px;
+    font-family: 'Varela Round', sans-serif;
+}
+
+input[type="submit"]:hover {
+    color: black;
+    background-color: rgb(255, 255, 255, 0.4);
+}
+
+input[type="datetime-local"] {
+    font-family: 'Varela Round', sans-serif;    
+}
+
+body {
+    /* Photo by <a href="https://unsplash.com/@sahandbabali?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sahand Babali</a> on <a href="https://unsplash.com/s/photos/watermelon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a> */
+    background: no-repeat center/cover url(../images/watermelon.jpg);
+    width: 100vw;
+    height: 100vh;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.link_header {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: rgba(255, 255, 255, 0.445);
+    padding: 10px;
+}
+
+h1 {
+    font-family: 'Balsamiq Sans', cursive;
+}
+
+body {
+    font-family: 'Varela Round', sans-serif;
+}
