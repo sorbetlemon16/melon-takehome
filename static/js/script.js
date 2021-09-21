@@ -6,12 +6,12 @@ $('#schedule').on('submit', (evt) => {
         "endTime": $('[name="end_time"]').val()
     };
 
-    $.post("/api/reservations", formData, (res) => {
+    $.post("/search_reservations", formData, (res) => {
         $('#available_reservations').html("Here is the current availability:");
         for (time of res) {
             $('#available_reservations').append(
                 `<form action="/reservations/book" method="POST">
-                <input value="${time}" name='start_time' type='submit'>
+                <input value="${time}" name='start_time' type='submit' class='schedule_res'>
                 </form>`);
         }
     })

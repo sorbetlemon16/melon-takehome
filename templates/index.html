@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 
 {% block head %}
+
+<!-- Google Font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans&family=Varela+Round&display=swap" rel="stylesheet">
+
+<!-- Custom Styling -->
+<link rel="stylesheet" href="/static/css/styles.css">
 <h1> Login </h1>
 {% endblock %}
 
 {% block body %}
 <form action= "/reservations" method="POST">
     <p>
-        Email <input type="text" name="username">
+        Username <input type="text" name="username">
         <input type="submit">
     </p>
 </form>

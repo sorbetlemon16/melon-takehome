@@ -27,6 +27,7 @@ def get_user_reservations():
     else:
         username = session["username"]
     existing_reservations = Reservation.query.filter_by(username=username).all()
+
     return render_template("reservations.html", reservations=existing_reservations)
 
 @app.route("/schedule")
@@ -55,7 +56,7 @@ def make_reservation():
     db.session.commit()
     return redirect("/reservations")
 
-@app.route("/api/reservations", methods=["POST"])
+@app.route("/search_reservations", methods=["POST"])
 def search_reservation():
     start_time = parse(request.form.get("startTime"))
     end_time = parse(request.form.get("endTime"))
@@ -88,7 +89,6 @@ def search_reservation():
     while current < end_time:
         if current not in existing_reservation_times and current.date() not in user_reservation_dates:
             times.append(current)
-            print(current.date())
         current = current + timedelta(minutes=30)
     return jsonify(times)
 
