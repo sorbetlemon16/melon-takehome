@@ -7,10 +7,7 @@ import pytz
 import os
 
 app = Flask(__name__)
-app.secret_key = "fake secret key"
-# os.environ["APP_SECRET_KEY"]
-# local_dev = os.environ.get("ENV", "") == "development"
-# db_uri = os.environ["DATABASE_URL"].replace("postgres", "postgresql")
+app.secret_key = os.environ["APP_SECRET_KEY"]
 connect_to_db(app)
 
 @app.route("/")

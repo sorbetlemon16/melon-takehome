@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<a href="/schedule"> Schedule a Reservation!</a>
 <!-- why does this need to be here, fix this (base.html not working?) -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" 
 integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
@@ -14,6 +13,11 @@ crossorigin="anonymous"></script>
 
 <!-- Custom Styling -->
 <link rel="stylesheet" href="/static/css/styles.css">
+
+<div class="link_header">
+  <a href="/schedule"> Schedule a Reservation!</a>
+  <a href="/"> Logout </a>
+</div>
 
 <h1>Reservations</h1>
 {% endblock %}
