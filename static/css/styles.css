@@ -22,6 +22,8 @@ body {
     background: no-repeat center/cover url(../images/watermelon.jpg);
     width: 100vw;
     height: 100vh;
+    background-attachment: fixed;
+    font-family: 'Varela Round', sans-serif;
 }
 
 .hidden {
@@ -37,8 +39,4 @@ body {
 
 h1 {
     font-family: 'Balsamiq Sans', cursive;
-}
-
-body {
-    font-family: 'Varela Round', sans-serif;
 }

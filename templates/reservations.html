@@ -12,16 +12,16 @@
 {% block body %}
   <table>
     {% for reservation in reservations %}
-    <tr>
+    <tr id="{{reservation.reservation_id}}" >
+      <form class="delete" id="{{reservation.reservation_id}}" action="/reservations/delete" method="POST">
         <td>
-          {{ reservation.start_time.strftime('%A, %d %B %Y, %H:%M')}}
+            {{ reservation.start_time.strftime('%A, %d %B %Y, %H:%M')}}
         </td>
-        <form class="delete" id="{{reservation.reservation_id}}" action="/reservations/delete" method="POST">
-          <td>
+        <td>
           <input name="start_time" value="{{reservation.start_time}}" class="hidden">
           <input type="submit" value="Cancel reservation">
-        </form>
-      </td>
+        </td>
+      </form>
     </tr>
     {% endfor %}
     </table>
