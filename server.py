@@ -35,14 +35,12 @@ def render_schedule():
 
 @app.route("/reservations/delete", methods=["POST"])
 def delete_reservation():
-    print("*********************")
-    print(request.form.get("startTime"))
     reservation_start = parse(request.form.get("startTime"))
-    print(request.form.get("startTime"))
     username = session["username"]
-    reservation_to_delete = Reservation.query.filter(Reservation.start_time==reservation_start).filter(Reservation.username==username).first()
-    print("*********************")
-    print(reservation_to_delete)
+    reservation_to_delete = Reservation.query\
+        .filter(Reservation.start_time==reservation_start)\
+        .filter(Reservation.username==username)\
+        .first()
     db.session.delete(reservation_to_delete)
     db.session.commit()
     return jsonify(reservation_to_delete.reservation_id)
@@ -52,21 +50,6 @@ def make_reservation():
     reservation_start = parse(request.form.get("start_time"))
     username = session["username"]
 
-    # username = request.get_json()["username"]
-    existing_reservations_for_user = (
-        Reservation.query.filter(
-            func.date(Reservation.start_time) == reservation_start.date()
-        )
-        .filter_by(username=username)
-        .all()
-    )
-    # if len(existing_reservations_for_user) > 0:
-    #     return jsonify(
-    #         {
-    #             "success": False,
-    #             "error": "User already has a reservation on this day",
-    #         }
-    #     )
     new_reservaton = Reservation(username=username, start_time=reservation_start)
     db.session.add(new_reservaton)
     db.session.commit()
@@ -74,41 +57,40 @@ def make_reservation():
 
 @app.route("/api/reservations", methods=["POST"])
 def search_reservation():
-    #start_time = parse(request.get_json()["startTime"])
     start_time = parse(request.form.get("startTime"))
-    #end_time = parse(request.get_json()["endTime"])
     end_time = parse(request.form.get("endTime"))
 
-    # possible reservations can only happen on the half hour
+    # retrieve reservations in within the specified time range 
+    all_reservations_in_range = (
+        db.session.query(Reservation.start_time)\
+        .filter(Reservation.start_time.between(start_time, end_time))\
+    )
+    # get reservation times without time zone
+    existing_reservation_times = \
+        {res[0].replace(tzinfo=None) for res in all_reservations_in_range.all()}
+
+    # of exisitng reservations, get the ones with the user
+    user_reservations = all_reservations_in_range\
+        .filter(Reservation.username==session["username"])\
+        .all()
+    user_reservation_dates = {res.start_time.date()for res in user_reservations}
+
+    # Initialize list for possible times 
+    times = []
+   
+    # Possible reservations can only happen on the half hour
     first_reservation_time = start_time + (datetime.min - start_time) \
         % timedelta(minutes=30)
     current = first_reservation_time
-    times = []
 
-    all_reservations_in_range = (
-        db.session.query(Reservation.start_time)
-        .filter(Reservation.start_time.between(start_time, end_time))
-        .all()
-    )
-    # Add possible times, filtering where a reservation already exists
-    existing_reservation_times = {res[0] for res in all_reservations_in_range}
+    # Add possible times, filtering where a reservation already exists OR where
+    # user already has a reservation on that date
     while current < end_time:
-        if current not in existing_reservation_times:
+        if current not in existing_reservation_times and current.date() not in user_reservation_dates:
             times.append(current)
+            print(current.date())
         current = current + timedelta(minutes=30)
     return jsonify(times)
-
-
-# production site
-# @app.route("/", defaults={"path": ""})
-# @app.route("/<path:path>")
-# def index(path):
-#     return app.send_static_file("templates/index.html")
-
-# @app.errorhandler(404)
-# def not_found(_error):
-#     return app.send_static_file("templates/index.html")
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
