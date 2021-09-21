@@ -1,6 +1,5 @@
 $('#schedule').on('submit', (evt) => {
     evt.preventDefault();
-    console.log('hey');
 
     const formData = {
         "startTime": $('[name="start_time"]').val(),
@@ -12,10 +11,22 @@ $('#schedule').on('submit', (evt) => {
         for (time of res) {
             $('#available_reservations').append(
                 `<form action="/reservations/book" method="POST">
-                ${time} 
                 <input value="${time}" name='start_time' type='submit'>
                 </form>`);
         }
+    })
+
+})
+
+$('.delete').on('submit', (evt) => {
+    evt.preventDefault();
+
+    const formData = {
+        "startTime": $('[name="start_time"]').val()
+    };
+
+    $.post("/reservations/delete", formData, (res) => {
+        $(`#${res}`).remove();
     })
 
 })

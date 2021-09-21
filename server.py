@@ -21,7 +21,11 @@ def homepage():
 
 @app.route("/reservations", methods=["POST", "GET"])
 def get_user_reservations():
-    username = request.form.get("username")
+    if request.method == "POST":
+        username = request.form.get("username")
+        session["username"] = username
+    else:
+        username = session["username"]
     existing_reservations = Reservation.query.filter_by(username=username).all()
     return render_template("reservations.html", reservations=existing_reservations)
 
@@ -29,18 +33,25 @@ def get_user_reservations():
 def render_schedule():
     return render_template("schedule.html")
 
-@app.route("/api/reservations/<reservation_id>", methods=["DELETE"])
-def delete_reservation(reservation_id):
-    reservation_to_delete = Reservation.query.get(reservation_id)
+@app.route("/reservations/delete", methods=["POST"])
+def delete_reservation():
+    print("*********************")
+    print(request.form.get("startTime"))
+    reservation_start = parse(request.form.get("startTime"))
+    print(request.form.get("startTime"))
+    username = session["username"]
+    reservation_to_delete = Reservation.query.filter(Reservation.start_time==reservation_start).filter(Reservation.username==username).first()
+    print("*********************")
+    print(reservation_to_delete)
     db.session.delete(reservation_to_delete)
     db.session.commit()
-    return jsonify(f"Reservation {reservation_id} deleted")
+    return jsonify(reservation_to_delete.reservation_id)
 
 @app.route("/reservations/book", methods=["POST"])
 def make_reservation():
-    print("**************************************")
-    print(request.form.get("start_time"))
     reservation_start = parse(request.form.get("start_time"))
+    username = session["username"]
+
     # username = request.get_json()["username"]
     existing_reservations_for_user = (
         Reservation.query.filter(
@@ -67,12 +78,11 @@ def search_reservation():
     start_time = parse(request.form.get("startTime"))
     #end_time = parse(request.get_json()["endTime"])
     end_time = parse(request.form.get("endTime"))
-    # print("***************************************")
-    # print(type(start_time))
-    # first_reservation_time = start_time + (
-    #     datetime.min.replace(tzinfo=pytz.UTC) - start_time
-    # ) % timedelta(minutes=30)
-    current = start_time#first_reservation_time
+
+    # possible reservations can only happen on the half hour
+    first_reservation_time = start_time + (datetime.min - start_time) \
+        % timedelta(minutes=30)
+    current = first_reservation_time
     times = []
 
     all_reservations_in_range = (
@@ -80,7 +90,7 @@ def search_reservation():
         .filter(Reservation.start_time.between(start_time, end_time))
         .all()
     )
-    # ADD THE FILTERING - REMOVE THE ONES THAT ALREADY EXIST
+    # Add possible times, filtering where a reservation already exists
     existing_reservation_times = {res[0] for res in all_reservations_in_range}
     while current < end_time:
         if current not in existing_reservation_times:

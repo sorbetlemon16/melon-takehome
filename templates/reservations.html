@@ -2,6 +2,10 @@
 
 {% block head %}
 <a href="/schedule"> Schedule a Reservation!</a>
+<!-- why does this need to be here, fix this (base.html not working?) -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" 
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
+  crossorigin="anonymous"></script>
 {% endblock %}
 
 {% block body %}
@@ -9,9 +13,15 @@
 
   <ul>
     {% for reservation in reservations %}
-      <li>
+      <form class="delete" id="{{reservation.reservation_id}}" action="/reservations/delete" method="POST">
+        <li>
           {{ reservation.start_time }}
-      </li>
+        </li>
+        <input name="start_time" value="{{reservation.start_time}}" visibility="hidden">
+        <input type="submit" value="delete">
+      </form>
     {% endfor %}
   </ul>
+  <script src="/static/js/script.js"></script>
+
 {% endblock %}
