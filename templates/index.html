@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<h1> Login </h1>
+{% endblock %}
+
+{% block body %}
+<form action= "/reservations" method="POST">
+    <p>
+        Email <input type="text" name="username">
+        <input type="submit">
+    </p>
+</form>
+{% endblock %}

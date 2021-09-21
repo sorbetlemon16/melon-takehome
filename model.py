@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
 class Reservation(db.Model):
     __tablename__ = "reservations"
 
@@ -21,10 +20,8 @@ class Reservation(db.Model):
             "start_time": self.start_time.isoformat(),
         }
 
-
-def connect_to_db(flask_app, db_uri, echo):
+def connect_to_db(flask_app, db_uri="postgresql:///reservations"):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
-    flask_app.config["SQLALCHEMY_ECHO"] = echo
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.app = flask_app

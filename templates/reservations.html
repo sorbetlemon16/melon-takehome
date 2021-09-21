@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<a href="/schedule"> Schedule a Reservation!</a>
+{% endblock %}
+
+{% block body %}
+  <h1>Reservations</h1>
+
+  <ul>
+    {% for reservation in reservations %}
+      <li>
+          {{ reservation.start_time }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

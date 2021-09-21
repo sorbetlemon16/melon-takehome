@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block head %}
+<!-- why does this need to be here, fix this (base.html not working?) -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" 
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" 
+  crossorigin="anonymous"></script>
+
+<h1> Schedule a melon reservation! </h1>
+<a href="/reservations"> Current Reservations</a>
+{% endblock %}
+
+{% block body %}
+<form id="schedule">
+    Between: <input type="datetime-local" name="start_time"> 
+    and <input type="datetime-local" name="end_time"> 
+    <input type="submit">
+</form>
+<div id="available_reservations"></div>
+<script src="/static/js/script.js"></script>
+{% endblock %}
