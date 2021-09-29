@@ -7,7 +7,7 @@ This project allows you to make and manage melon tasting reservations. 🍉
 I chose to use Flask because it is a lightweight web framework that is flexible and simple to implement. I used postgreSQL because it's a commonly used relational database and makes a good choice since every reservation has a consistent format. SQLAlchemy allowed me to incorporate these two technologies using Python. I used AJAX to handle retrieving available reservations from the database so that the page does not need to reload after the user submits their query.     
 
 ## Reflection
-In addition to fulfilling the requirements, I also added delete functionality which also includes an AJAX request so when users delete reservations they will immediately be removed from the page.
+In addition to fulfilling the requirements, I also added delete functionality which also includes an AJAX request so when users delete reservations they will immediately be removed from the page. In addition, I have ensured that my web app is responsive to different screen sizes.
 
 Given more time, I would incorporate a User table that would have a relationship with the Reservation table. With a User table, I could have a password field which would allow me to enable authentication. I would use the Python hashlib library with salt to encrypt the password. 
 
