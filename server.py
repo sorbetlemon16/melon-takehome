@@ -18,10 +18,12 @@ def homepage():
 
 @app.route("/reservations", methods=["POST", "GET"])
 def get_user_reservations():
+    """ Retrieve reservations the user has made."""
     if request.method == "POST":
         username = request.form.get("username")
         session["username"] = username
     else:
+        # if the user is not in session, redirect them to the homepage
         if 'username' in session:
             username = session["username"]
         else:
@@ -32,10 +34,12 @@ def get_user_reservations():
 
 @app.route("/schedule")
 def render_schedule():
+    """ View scheduling page."""
     return render_template("schedule.html")
 
 @app.route("/reservations/delete", methods=["POST"])
 def delete_reservation():
+    """ Delete reservations the user has made."""
     reservation_start = parse(request.form.get("startTime"))
     username = session["username"]
     reservation_to_delete = Reservation.query\
@@ -48,6 +52,7 @@ def delete_reservation():
 
 @app.route("/reservations/book", methods=["POST"])
 def make_reservation():
+    """ Create a reserviation with the specified user and time."""
     reservation_start = parse(request.form.get("start_time"))
     username = session["username"]
 
