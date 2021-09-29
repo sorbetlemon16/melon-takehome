@@ -56,10 +56,10 @@ def make_reservation():
     db.session.commit()
     return redirect("/reservations")
 
-@app.route("/search_reservations", methods=["POST"])
+@app.route("/search_reservations", methods=["GET"])
 def search_reservation():
-    start_time = parse(request.form.get("startTime"))
-    end_time = parse(request.form.get("endTime"))
+    start_time = parse(request.args.get("startTime"))
+    end_time = parse(request.args.get("endTime"))
 
     # retrieve reservations in within the specified time range 
     all_reservations_in_range = (
