@@ -1,14 +1,16 @@
-#Melon Reservation Scheduler#
+## Melon Reservation Scheduler
 
+# Description
 This project allows you to make and manage melon tasting reservations. 🍉
 
-Installation
+# Installation
 To run Melon Reservation Schedule on your local machine:
 
 Clone this repo: https://github.com/sorbetlemon16/melon_takehome.git
-Create and activate a virtual environment inside your projec directory:
+Create and activate a virtual environment inside your project directory:
 
-```virtualenv env (Mac OS)
+```
+virtualenv env (Mac OS)
 virtualenv env --always-copy (Windows OS)
 source env/bin/activate
 ```
