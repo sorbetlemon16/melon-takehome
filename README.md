@@ -3,6 +3,11 @@
 ## Description
 This project allows you to make and manage melon tasting reservations. 🍉
 
+## Reflection
+Given more time, I would incorporate a User table that would have a relationship with the Reservation table. With a User table, I could have a password field which would allow me to enable authentication. I would use the Python hashlib library with salt to encrypt the password. 
+
+I would also like to add unit tests that test that a particular time does not show up in the list of available times when it's already booked. 
+
 ## Installation
 To run Melon Reservation Schedule on your local machine:
 
