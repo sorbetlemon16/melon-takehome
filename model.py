@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()

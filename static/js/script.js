@@ -6,7 +6,7 @@ $('#schedule').on('submit', (evt) => {
         "endTime": $('[name="end_time"]').val()
     };
 
-    $.post("/search_reservations", formData, (res) => {
+    $.get("/search_reservations", formData, (res) => {
          if (res.length === 0) {
             $('#available_reservations').html("Sorry, there is no availability at these times, try another search :(")
          }

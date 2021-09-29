@@ -22,7 +22,10 @@ def get_user_reservations():
         username = request.form.get("username")
         session["username"] = username
     else:
-        username = session["username"]
+        if 'username' in session:
+            username = session["username"]
+        else:
+            redirect("/")
     existing_reservations = Reservation.query.filter_by(username=username).all()
 
     return render_template("reservations.html", reservations=existing_reservations)
