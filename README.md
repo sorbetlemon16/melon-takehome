@@ -1,4 +1,4 @@
-#Melon Reservation Scheduler
+#Melon Reservation Scheduler#
 
 This project allows you to make and manage melon tasting reservations. 🍉
 
@@ -10,7 +10,8 @@ Create and activate a virtual environment inside your projec directory:
 
 ```virtualenv env (Mac OS)
 virtualenv env --always-copy (Windows OS)
-source env/bin/activate```
+source env/bin/activate
+```
 
 Install the dependencies:
 ```pip3 install -r requirements.txt```
