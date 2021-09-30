@@ -1,3 +1,12 @@
+// set start and end time to be after current time
+const startTime = document.querySelector('#datetime_start')
+if (startTime) {
+    startTime.min = new Date().toISOString().substring(0,16);
+}
+const endTime = document.querySelector('#datetime_end')
+if (endTime) {endTime.min = new Date().toISOString().substring(0,16); }
+
+// retrieve available reservations by sending AJAX request to sever
 $('#schedule').on('submit', (evt) => {
     evt.preventDefault();
 
@@ -23,6 +32,7 @@ $('#schedule').on('submit', (evt) => {
 
 })
 
+// delete reservation with an AJAX request
 $('.delete').on('submit', (evt) => {
     evt.preventDefault();
 
@@ -30,8 +40,10 @@ $('.delete').on('submit', (evt) => {
         "startTime": $('[name="start_time"]').val()
     };
 
-    $.post("/reservations/delete", formData, (res) => {
-        $(`#${res}`).remove();
-    })
+    // remove the HTML element
+    $(`#${evt.target.id}`).remove();
+
+    // remove the reservation from the database
+    $.post("/reservations/delete", formData)
 
 })
