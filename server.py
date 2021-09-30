@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, flash, session, redirect, jso
 from sqlalchemy import func
 from datetime import datetime, timedelta
 from dateutil.parser import parse
-from model import db, connect_to_db, Reservation
+from model import db, connect_to_db, available_reservations, \
+    retrieve_reservations, create_reservation, delete_reservations
 import pytz
 import os
 
@@ -28,7 +29,7 @@ def get_user_reservations():
             username = session["username"]
         else:
             redirect("/")
-    existing_reservations = Reservation.query.filter_by(username=username).all()
+    existing_reservations = retrieve_reservations(username)
 
     return render_template("reservations.html", reservations=existing_reservations)
 
@@ -42,12 +43,8 @@ def delete_reservation():
     """ Delete reservations the user has made."""
     reservation_start = parse(request.form.get("startTime"))
     username = session["username"]
-    reservation_to_delete = Reservation.query\
-        .filter(Reservation.start_time==reservation_start)\
-        .filter(Reservation.username==username)\
-        .first()
-    db.session.delete(reservation_to_delete)
-    db.session.commit()
+
+    reservation_to_delete = delete_reservations(reservation_start, username)
     return jsonify(reservation_to_delete.reservation_id)
 
 @app.route("/reservations/book", methods=["POST"])
@@ -56,9 +53,7 @@ def make_reservation():
     reservation_start = parse(request.form.get("start_time"))
     username = session["username"]
 
-    new_reservaton = Reservation(username=username, start_time=reservation_start)
-    db.session.add(new_reservaton)
-    db.session.commit()
+    create_reservation(username, reservation_start)
     return redirect("/reservations")
 
 @app.route("/search_reservations", methods=["GET"])
@@ -66,36 +61,8 @@ def search_reservation():
     start_time = parse(request.args.get("startTime"))
     end_time = parse(request.args.get("endTime"))
 
-    # retrieve reservations in within the specified time range 
-    all_reservations_in_range = (
-        db.session.query(Reservation.start_time)\
-        .filter(Reservation.start_time.between(start_time, end_time))\
-    )
-    # get reservation times without time zone
-    existing_reservation_times = \
-        {res[0].replace(tzinfo=None) for res in all_reservations_in_range.all()}
-
-    # of exisitng reservations, get the ones with the user
-    user_reservations = all_reservations_in_range\
-        .filter(Reservation.username==session["username"])\
-        .all()
-    user_reservation_dates = {res.start_time.date()for res in user_reservations}
-
-    # Initialize list for possible times 
-    times = []
-   
-    # Possible reservations can only happen on the half hour
-    first_reservation_time = start_time + (datetime.min - start_time) \
-        % timedelta(minutes=30)
-    current = first_reservation_time
-
-    # Add possible times, filtering where a reservation already exists OR where
-    # user already has a reservation on that date
-    while current < end_time:
-        if current not in existing_reservation_times and current.date() not in user_reservation_dates:
-            times.append(current)
-        current = current + timedelta(minutes=30)
-    return jsonify(times)
+    available_times = available_reservations(start_time, end_time, session["username"])
+    return jsonify(available_times)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)
