@@ -31,6 +31,9 @@ Install the dependencies:
 (Optionally) Seed the database:
 ```python3 seed.py```
 
+Create a secrets.sh file to assign a value to APP_SECRET_KEY and run it:
+```source secrets.sh```
+
 Run the app:
 ```python3 server.py```
 
