@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, flash, session, redirect, jso
 from sqlalchemy import func
 from datetime import datetime, timedelta
 from dateutil.parser import parse
-from model import db, connect_to_db, available_reservations, \
-    retrieve_reservations, create_reservation, delete_reservations
+from model import Reservation, db, connect_to_db
 import pytz
 import os
 
@@ -29,7 +28,7 @@ def get_user_reservations():
             username = session["username"]
         else:
             redirect("/")
-    existing_reservations = retrieve_reservations(username)
+    existing_reservations = Reservation.retrieve_reservations(username)
 
     return render_template("reservations.html", reservations=existing_reservations)
 
@@ -44,16 +43,22 @@ def delete_reservation():
     reservation_start = parse(request.json.get("startTime"))
     username = session["username"]
 
-    reservation_to_delete = delete_reservations(reservation_start, username)
-    return jsonify(reservation_to_delete.reservation_id)
+    reservation_to_delete = Reservation.find_reservation_by_start_and_user(
+        reservation_start, username
+    )
+    db.session.delete(reservation_to_delete)
+    db.session.commit()
+    return "Success"
 
 @app.route("/reservations/book", methods=["POST"])
 def make_reservation():
-    """ Create a reserviation with the specified user and time."""
+    """ Create a reservation with the specified user and time."""
     reservation_start = parse(request.form.get("start_time"))
     username = session["username"]
 
-    create_reservation(username, reservation_start)
+    new_reservation = Reservation.create_reservation(username, reservation_start)
+    db.session.add(new_reservation)
+    db.session.commit()
     return redirect("/reservations")
 
 @app.route("/search_reservations", methods=["GET"])
@@ -61,7 +66,7 @@ def search_reservation():
     start_time = parse(request.args.get("startTime"))
     end_time = parse(request.args.get("endTime"))
 
-    available_times = available_reservations(start_time, end_time, session["username"])
+    available_times = Reservation.available_reservations(start_time, end_time, session["username"])
     return jsonify(available_times)
 
 if __name__ == "__main__":
