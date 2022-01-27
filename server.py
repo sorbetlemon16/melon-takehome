@@ -41,7 +41,9 @@ def render_schedule():
 @app.route("/reservations/delete", methods=["POST"])
 def delete_reservation():
     """ Delete reservations the user has made."""
-    reservation_start = parse(request.form.get("startTime"))
+    print(request.form.get("startTime"))
+    print("\n"*20)
+    reservation_start = parse(request.json.get("startTime"))
     username = session["username"]
 
     reservation_to_delete = delete_reservations(reservation_start, username)
