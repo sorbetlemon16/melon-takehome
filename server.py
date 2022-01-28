@@ -16,6 +16,15 @@ def homepage():
 
     return render_template("index.html")
 
+@app.route("/logout")
+def logout():
+    """Logout and redirect homepage."""
+
+    session.clear()
+
+    return redirect("/")
+
+
 @app.route("/reservations", methods=["POST", "GET"])
 def get_user_reservations():
     """ Retrieve reservations the user has made."""
@@ -28,7 +37,7 @@ def get_user_reservations():
             username = session["username"]
         # if the user is not in session, redirect them to the homepage
         else:
-            redirect("/")
+            return redirect("/")
     existing_reservations = Reservation.retrieve_reservations(username)
 
     return render_template("reservations.html", reservations=existing_reservations)

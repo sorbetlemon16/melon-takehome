@@ -21,7 +21,7 @@ for (let button of deleteButtons) {
             },
         })
         .then(res => {
-            if (res.ok) {
+            if (!res.ok) {
                 alert('Attempt to cancel reservation failed. Please try again');
             }
         })
