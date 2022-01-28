@@ -40,20 +40,20 @@ class Reservation(db.Model):
 
     @classmethod
     def available_reservations(cls, start_time, end_time, username):
-            # retrieve reservations in within the specified time range 
+        # Retrieve reservations in within the specified time range 
         all_reservations_in_range = (
             db.session.query(Reservation.start_time)\
             .filter(Reservation.start_time.between(start_time, end_time))\
         )
-        # get reservation times without time zone
+        # Get reservation times without time zone
         existing_reservation_times = \
             {res[0].replace(tzinfo=None) for res in all_reservations_in_range.all()}
 
-        # of exisitng reservations, get the ones with the user
+        # Of existng reservations, get the ones with the user
         user_reservations = all_reservations_in_range\
             .filter(Reservation.username==username)\
             .all()
-        user_reservation_dates = {res.start_time.date()for res in user_reservations}
+        user_reservation_dates = {res.start_time.date() for res in user_reservations}
 
         # Initialize list for possible times 
         times = []

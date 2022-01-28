@@ -14,9 +14,10 @@ Given more time, I would incorporate a User table that would have a relationship
 I would also like to add unit tests that test that a particular time does not show up in the list of available times when it's already booked. I added error handling for if a user goes to the /reservations URL if the user is not in session, which could occur with other routes as well. However, since the user is unable to navigate to these routes without being in session (unless they manually enter the URL) I did not include error handling there. 
 
 ## Installation
-To run Melon Reservation Schedule on your local machine:
+To run Melon Reservation Schedule on your local machine, follow the instructions below (note: these instructions assume you have Postgres installed and running):
 
 Clone this repo: https://github.com/sorbetlemon16/melon_takehome.git
+
 Create and activate a virtual environment inside your project directory:
 
 ```
@@ -30,6 +31,9 @@ Install the dependencies:
 
 (Optionally) Seed the database:
 ```python3 seed.py```
+Note: if you do not run ```seed.py```, make sure you create a database named
+reservations: 
+```createdb reservations```. 
 
 Create a secrets.sh file to assign a value to APP_SECRET_KEY and run it:
 ```source secrets.sh```

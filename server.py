@@ -23,9 +23,10 @@ def get_user_reservations():
         username = request.form.get("username")
         session["username"] = username
     else:
-        # if the user is not in session, redirect them to the homepage
+        # assign a value to username is user is in session
         if 'username' in session:
             username = session["username"]
+        # if the user is not in session, redirect them to the homepage
         else:
             redirect("/")
     existing_reservations = Reservation.retrieve_reservations(username)
