@@ -49,7 +49,7 @@ class Reservation(db.Model):
         existing_reservation_times = \
             {res[0].replace(tzinfo=None) for res in all_reservations_in_range.all()}
 
-        # Of existng reservations, get the ones with the user
+        # Of existing reservations, get the ones with the user
         user_reservations = all_reservations_in_range\
             .filter(Reservation.username==username)\
             .all()

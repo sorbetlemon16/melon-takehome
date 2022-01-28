@@ -1,9 +1,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, jsonify
-from sqlalchemy import func
 from datetime import datetime, timedelta
 from dateutil.parser import parse
 from model import Reservation, db, connect_to_db
-import pytz
 import os
 
 app = Flask(__name__)

@@ -19,7 +19,7 @@ document.querySelector('#schedule').addEventListener('submit', (evt) => {
         .then(response => response.json())
         .then(res => {
             if (res.length === 0) {
-                document.getElementById('available_reservations').innerHTML 
+                document.getElementById('reservation_text').innerHTML 
                     = 'Sorry, there is no availability at these times, try another search :(';  
             }
             else {
