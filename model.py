@@ -40,7 +40,7 @@ class Reservation(db.Model):
 
     @classmethod
     def available_reservations(cls, start_time, end_time, username):
-        # Retrieve reservations in within the specified time range 
+        # Retrieve reservations within the specified time range 
         all_reservations_in_range = (
             db.session.query(Reservation.start_time)\
             .filter(Reservation.start_time.between(start_time, end_time))\
@@ -49,10 +49,16 @@ class Reservation(db.Model):
         existing_reservation_times = \
             {res[0].replace(tzinfo=None) for res in all_reservations_in_range.all()}
 
-        # Of existing reservations, get the ones with the user
-        user_reservations = all_reservations_in_range\
+        # Get ALL current user reservations. The reason I am doing this is because during
+        # testing I noticed that the all_reservations_in_range did not include reservations
+        #  the user made that day at a later time outside the end time. To prevent users from 
+        # booking multiple reservations on the same day, I get all current user reservations 
+        # and check that any other available reservations are not on that day. 
+        user_reservations = db.session.query(Reservation.start_time)\
             .filter(Reservation.username==username)\
             .all()
+
+        # get the list of dates the user has a reservation on
         user_reservation_dates = {res.start_time.date() for res in user_reservations}
 
         # Initialize list for possible times 
