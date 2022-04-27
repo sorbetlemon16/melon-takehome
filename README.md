@@ -35,8 +35,13 @@ Create a secrets.sh file to assign a value to APP_SECRET_KEY and run it:
 (Optionally) Seed the database:
 ```python3 seed.py```
 Note: if you do not run ```seed.py```, make sure you create a database named
-reservations: 
-```createdb reservations```. 
+melon_reservations as well as the tables by running the following commands: 
+Create the database and tables by running the following commands: 
+```
+createdb melon_reservations 
+python3 -i model.py
+>>> db.create_all()
+``` 
 
 Run the app:
 ```python3 server.py```

@@ -54,8 +54,8 @@ class Reservation(db.Model):
         #  the user made that day at a later time outside the end time. To prevent users from 
         # booking multiple reservations on the same day, I get all current user reservations 
         # and check that any other available reservations are not on that day. 
-        user_reservations = db.session.query(Reservation.start_time)\
-            .filter(Reservation.username==username)\
+        user_reservations = db.session.query(cls.start_time)\
+            .filter(cls.username==username)\
             .all()
 
         # get the list of dates the user has a reservation on
@@ -77,7 +77,7 @@ class Reservation(db.Model):
             current = current + timedelta(minutes=30)
         return times
 
-def connect_to_db(flask_app, db_uri="postgresql:///reservations"):
+def connect_to_db(flask_app, db_uri="postgresql:///melon_reservations"):
     flask_app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     flask_app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
