@@ -29,14 +29,14 @@ source env/bin/activate
 Install the dependencies:
 ```pip3 install -r requirements.txt```
 
+Create a secrets.sh file to assign a value to APP_SECRET_KEY and run it:
+```source secrets.sh```
+
 (Optionally) Seed the database:
 ```python3 seed.py```
 Note: if you do not run ```seed.py```, make sure you create a database named
 reservations: 
 ```createdb reservations```. 
-
-Create a secrets.sh file to assign a value to APP_SECRET_KEY and run it:
-```source secrets.sh```
 
 Run the app:
 ```python3 server.py```

@@ -13,7 +13,7 @@ model.db.create_all()
 # on dates corresponding to their user number (October 1 - 10) at 9am
 for i in range(10):
     username = "user" + str(i)
-    reservation_start = datetime.datetime(2021, 10, i + 1, 9)
+    reservation_start = datetime.datetime(2022, 5, i + 1, 9)
     new_reservaton = model.Reservation(username=username, start_time=reservation_start)
     model.db.session.add(new_reservaton)
     model.db.session.commit()
